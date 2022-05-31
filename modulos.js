@@ -5,9 +5,23 @@ const chalk = require('chalk');
 function trataErro(erro){
     if(erro.code === "EISDIR")
         throw new Error(erro.code, "Erro no EISDIR.");
+    if(erro.code === "ENOENT")
+        throw new Error(erro.code, "Erro no ENOENT");
     else
         throw new Error(erro.code, "Erro genérico.");
 }
+
+//Função getFiles, utilizando async e await
+async function getFilesAsyncAwait(caminho){
+    const encoding = "utf-8";
+    try {
+        const texto = await fs.promises.readFile(caminho, encoding);
+        console.log(chalk.green(texto));
+    } catch (error) {
+        trataErro(error);
+    }
+}
+
 
 //Função getFiles, método assíncrono utilizando promises
 function getFilesAsync(caminho){
@@ -31,4 +45,4 @@ function getFiles(caminho){
     })
 }
 
-module.exports = {getFiles, getFilesAsync};
+module.exports = {getFiles, getFilesAsync, getFilesAsyncAwait};
