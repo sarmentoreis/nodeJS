@@ -33,6 +33,24 @@ function getFilesAsync(caminho){
     .finally(() => console.log(chalk.bgBlue.red.bold("\n\nFim de carregamento.\n\n"))) // -> Executa independente de dar sucesso ou erro.
 }
 
+//Regex utilizando "/" no começo e fim + gm
+function extraiLinks(texto){
+    const regex = /\[([^\]]*)\]\((https?:\/\/[^$#\s].[^\s]*)\)/gm
+    //const linksExtraidos = texto.match(regex);
+    const arrayLinks = []
+    let temp;
+    while((temp = regex.exec(texto)) != null){
+        arrayLinks.push({[temp[1]]: temp[2]});
+    }
+    return arrayLinks;
+}
+
+//Regex utilizando construtor new RegExp
+function getDomain(texto){
+    const regex = new RegExp("https?:\/\/[^\s$.?#].[^\/\s]*\/", 'gm');
+    const protocolosEDominios = texto.match(regex);
+    console.log(protocolosEDominios);
+}
 
 //Função getFiles, método síncrono.
 function getFiles(caminho){
@@ -45,4 +63,4 @@ function getFiles(caminho){
     })
 }
 
-module.exports = {getFiles, getFilesAsync, getFilesAsyncAwait};
+module.exports = {getFiles, getFilesAsync, getFilesAsyncAwait, extraiLinks, getDomain};
